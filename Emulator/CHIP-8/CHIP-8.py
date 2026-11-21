@@ -1,3 +1,5 @@
+from Display import Display
+
 # CHIP-8 Font Data, in bytes format
 FONT = bytes([
     0xF0, 0x90, 0x90, 0x90, 0xF0, # 0
@@ -25,10 +27,4 @@ FONT = bytes([
 class CHIP8:
     def __init__(self):
         self.memory = bytearray(4096)   # Initialize 4kb of RAM for the CHIP-8 system
-
-# Test the CHIP-8 emulator by loading the font data into memory and printing the memory contents
-chip = CHIP8()
-
-# Load the font data in address 0x050 to 0x0A0
-chip.memory[0x050:0x0A0] = FONT
-print(chip.memory)
+        self.stack = []                 # Just a simple list to act as a stack for the emulator
