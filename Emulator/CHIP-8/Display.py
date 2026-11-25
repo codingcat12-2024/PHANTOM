@@ -26,8 +26,8 @@ class Display:
 
     def set_pixel(self, x: int, y: int) -> bool:
         if not (0 <= x < self.width and 0 <= y < self.height):
-            return False
-
+            return
+        
         idx = (y * self.width + x) // 8
         mask = 1 << (7 - (x % 8))
 
@@ -35,6 +35,18 @@ class Display:
         collision = bool(self.buffer[idx] & mask)
         self.buffer[idx] ^= mask
         return collision
+
+    def sprite(self, x: int, y: int, sprite: bytes) -> None:
+        for dy in range(len(sprite)):
+            for dx in range(8):
+                num_bits = len(sprite[dy]) * 4
+                bin_str = format(int(sprite[dy], 16), f'0{num_bits}b')
+
+                bit_list_str = list(bin_str)
+                bit_list_int = [int(bit) for bit in bin_str]
+
+                if bit_list_int[dx]:
+                    self.set_pixel((x % 64) + dx, (y % 32) + dy)
 
     def render(self) -> None:
         self.surface.fill(self.bg_color)
